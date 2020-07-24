@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--Code written by Jonathan Moyers-->
+<html>
+<head>
+	<title>Home</title>
+</head>
+<body style="background-color:limegreen;font-family:Georgia">
+<h1 style="font-weight:bold;font-size:40px;text-align:center">ReConnect Employer Homepage</h1>
+
+<br><br><br>
+<p id="satisfied">Connecting...</p>
+<p id="unsatisfied">Connecting...</p>
+<h3>Breakdown by Question:</h3>
+<table width=100% border=2 bordercolor="black" cellpadding=5>
+	<tr>
+		<th rowspan="8">I take short breaks to get up and stretch throughout the day</th>
+	</tr><tr>
+		<td id="q1-3">.</td>
+	</tr><tr>
+		<td id="q1-2">.</td>
+	</tr><tr>
+		<td id="q1-1">.</td>
+	</tr><tr>
+		<td id="q10">.</td>
+	</tr><tr>
+		<td id="q11">.</td>
+	</tr><tr>
+		<td id="q12">.</td>
+	</tr><tr>
+		<td id="q13">.</td>
+	</tr><tr>
+		<th rowspan="8">I know who to contact at work if I need support</th>
+	</tr><tr>
+		<td id="q2-3">.</td>
+	</tr><tr>
+		<td id="q2-2">.</td>
+	</tr><tr>
+		<td id="q2-1">.</td>
+	</tr><tr>
+		<td id="q20">.</td>
+	</tr><tr>
+		<td id="q21">.</td>
+	</tr><tr>
+		<td id="q22">.</td>
+	</tr><tr>
+		<td id="q23">.</td>
+	</tr><tr>
+		<th rowspan="8">I feel lonely more often than usual</th>
+	</tr><tr>
+		<td id="q3-3">.</td>
+	</tr><tr>
+		<td id="q3-2">.</td>
+	</tr><tr>
+		<td id="q3-1">.</td>
+	</tr><tr>
+		<td id="q30">.</td>
+	</tr><tr>
+		<td id="q31">.</td>
+	</tr><tr>
+		<td id="q32">.</td>
+	</tr><tr>
+		<td id="q33">.</td>
+	</tr>
+</table>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+
+<script>
+	// Your web app's Firebase configuration
+	var firebaseConfig = {
+	apiKey: "AIzaSyDNZNpviaPfoQFRI2ZTIYMT-5b_9QSqB44",
+	authDomain: "test-database-29a32.firebaseapp.com",
+	databaseURL: "https://test-database-29a32.firebaseio.com",
+	projectId: "test-database-29a32",
+	storageBucket: "test-database-29a32.appspot.com",
+	messagingSenderId: "314893848219",
+	appId: "1:314893848219:web:df09a6c4358db732ca403e"
+	};
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+	//Get reference to Firebase
+  	var database = firebase.database();
+
+  	var responseRef = database.ref('responses/');
+  	responseRef.on('value', function(snapshot) {
+  		updateData(snapshot.val());
+  	});
+
+  	function updateData(responses) {
+  		var response;
+  		var sCount = 0;
+  		var uCount = 0;
+  		var sPerc = 0;
+  		var uPerc = 0;
+
+  		//Keeping track of answers is stored as a nested array because loops
+  		var questions = [null,[0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0]];
+
+  		//The database returns an empty element in front
+  		var totalResp = responses.length-1;
+  		for (response of responses) {
+  			//Skip any null responses because we don't need them
+  			if (response == null) continue;
+
+  			//Add to total satisfied count
+  			if (response.satisfied) sCount++;
+  			else uCount++;
+
+  			var i;
+  			for(i = 1; i <= 3; i++) {
+  				//This is disgusting but whee loops
+  				//Essentially does 3 things
+  				//gets the question response labeled 'question_i' where i is 1-3
+  				//Then adds 3 to convert to the proper indexes
+  				//Then adds 1 to the number of responses in the questions array
+  				questions[i][response['question_'+i]+3]++;
+  				console.log(response);
+  			}
+  		}
+  		sPerc = sCount / totalResp * 100;
+  		uPerc = uCount / totalResp * 100;
+
+  		//Time to populate all the text boxes and table
+  		document.getElementById("satisfied").innerText = ("The number of people who are satisfied: " + sCount + " | " +  sPerc.toFixed(2) + "%");
+  		document.getElementById("unsatisfied").innerText = ("The number of people who are not satisfied: " + uCount + " | " +  uPerc.toFixed(2) + "%");
+
+  		for(var k = 1; k <= 3; k++) {
+  			document.getElementById("q"+k+"-3").innerText = "Strongly Disagree: " + questions[k][0];
+  			document.getElementById("q"+k+"-2").innerText = "Moderately Disagree: " + questions[k][1];
+  			document.getElementById("q"+k+"-1").innerText = "Slightly Disagree: " + questions[k][2];
+  			document.getElementById("q"+k+"0").innerText = "Neutral: " + questions[k][3];
+  			document.getElementById("q"+k+"1").innerText = "Slightly Agree: " + questions[k][4];
+  			document.getElementById("q"+k+"2").innerText = "Moderately Agree: " + questions[k][5];
+  			document.getElementById("q"+k+"3").innerText = "Strongly Agree: " + questions[k][6];
+  		}
+  		console.log(questions);
+  	};
+</script>
+</body>
+</html>

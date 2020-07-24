@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<!--Code written by Jonathan Moyers-->
+<html>
+<head>
+	<title>Dashboard</title>
+</head>
+<body style="background-color:limegreen;font-family:Georgia;text-align:center">
+<h1 style="font-weight:bold;font-size:50px">Dashboard</h1>
+<br><br><br>
+<h3>Where do you want to go?</h3>
+<button onclick="redirect('Home.html')">See Data</button>
+<button onclick="redirect('send.html')">Send E-mails</button>
+<script>
+	//This function redirects to the page specified by the argument
+	function redirect(arg) {
+		window.location.href =("https://test-database-29a32.web.app/"+arg);
+	}
+</script>
+</body>
+</html>

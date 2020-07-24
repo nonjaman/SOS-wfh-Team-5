@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<!--Code written by Jonathan Moyers and Jacob Whitcomb-->
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><title> ReConnect Questionnaire </title></head>
+
+<body style="background-color:limegreen;font-family:Georgia">
+
+
+<h2 style="text-align:center;font-weight:bold;font-size:40px">Please answer the following questions to the best of your ability</h2>
+<p style="text-align:center">Your identity will not be shared with your employer</p>
+<br><br>
+<!-- Radio Question 1 -->
+<table style="width:80%">
+  <thead>
+    <tr>
+      <td style="width:500px">I take short breaks to get up and stretch throughout the day</td>
+      <td>Strongly <br> Disagree</td>
+      <td>Moderately <br> Disagree</td>
+      <td>Slightly <br> Disagree</td>
+      <td>Neutral</td>
+      <td>Slightly <br>Agree</td>
+      <td>Moderately <br> Agree</td>
+      <td>Strongly <br> Agree</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td><input type="radio" id="rad1-3" name="q1" value="-3"></td>
+      <td><input type="radio" id="rad1-2" name="q1" value="-2"></td>
+      <td><input type="radio" id="rad1-1" name="q1" value="-1"></td>
+      <td><input type="radio" id="rad10" name="q1" value="0"></td>
+      <td><input type="radio" id="rad11" name="q1" value="1"></td>
+      <td><input type="radio" id="rad12" name="q1" value="2"></td>
+      <td><input type="radio" id="rad13" name="q1" value="3"></td>
+    </tr>
+  </tbody>
+</table>
+<br><br><br><br>
+    
+<table style="width:80%">
+  <thead>
+    <tr>
+      <td style="width:500px">I know who to contact at work if I need support</td>
+      <td>Strongly <br> Disagree</td>
+      <td>Moderately <br> Disagree</td>
+      <td>Slightly <br> Disagree</td>
+      <td>Neutral</td>
+      <td>Slightly <br>Agree</td>
+      <td>Moderately <br> Agree</td>
+      <td>Strongly <br> Agree</td>
+    </tr>
+  </thead>  
+<tbody>
+    <tr>
+      <td></td>
+      <td><input type="radio" id="rad1-3" name="q2" value="-3"></td>
+      <td><input type="radio" id="rad1-2" name="q2" value="-2"></td>
+      <td><input type="radio" id="rad1-1" name="q2" value="-1"></td>
+      <td><input type="radio" id="rad10" name="q2" value="0"></td>
+      <td><input type="radio" id="rad11" name="q2" value="1"></td>
+      <td><input type="radio" id="rad12" name="q2" value="2"></td>
+      <td><input type="radio" id="rad12" name="q2" value="3"></td>
+    </tr>
+  </tbody>
+</table>
+<br><br><br><br>
+
+<table style="width:80%">
+  <thead>
+    <tr>
+      <td style="width:500px">I feel lonely more often than usual</td>
+      <td>Strongly <br> Disagree</td>
+      <td>Moderately <br> Disagree</td>
+      <td>Slightly <br> Disagree</td>
+      <td>Neutral</td>
+      <td>Slightly <br>Agree</td>
+      <td>Moderately <br> Agree</td>
+      <td>Strongly <br> Agree</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td><input type="radio" id="rad1-3" name="q3" value="-3"></td>
+      <td><input type="radio" id="rad1-2" name="q3" value="-2"></td>
+      <td><input type="radio" id="rad1-1" name="q3" value="-1"></td>
+      <td><input type="radio" id="rad10" name="q3" value="0"></td>
+      <td><input type="radio" id="rad11" name="q3" value="1"></td>
+      <td><input type="radio" id="rad12" name="q3" value="2"></td>
+      <td><input type="radio" id="rad12" name="q3" value="3"></td>
+    </tr>
+  </tbody>
+</table>
+<br><br><br><br>
+
+<div align="right">
+<button type="button" onclick="makeResponse()" style="vertical-align:right">Submit Answers</button>
+</div>
+
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+
+<script>
+	function makeResponse() {
+		//Find most powerful check until switch to radio
+		var values = [0, 0, 0];
+		for (var i = 1; i <= 3; i++) {
+			var radios = document.getElementsByName('q'+i);
+			for (var radio of radios) {
+				if (radio.checked) {
+					var val = radio.value;
+					if (val == "0")
+						val = 0;
+					else val = parseInt(val, 10);
+					values[i-1] = val;
+					break;
+				}
+			}
+		}
+		console.log(values);
+		//Adds the response to the database
+		addResponse(values[0], values[1], values[2]);
+		//Make it to where you can't log multiple things
+		window.location.replace("https://test-database-29a32.web.app/finish.html");
+		return;
+	}
+</script>
+
+<script>
+	// Your web app's Firebase configuration
+	var firebaseConfig = {
+	apiKey: "AIzaSyDNZNpviaPfoQFRI2ZTIYMT-5b_9QSqB44",
+	authDomain: "test-database-29a32.firebaseapp.com",
+	databaseURL: "https://test-database-29a32.firebaseio.com",
+	projectId: "test-database-29a32",
+	storageBucket: "test-database-29a32.appspot.com",
+	messagingSenderId: "314893848219",
+	appId: "1:314893848219:web:df09a6c4358db732ca403e"
+	};
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+	//Get reference to Firebase
+  	var database = firebase.database();
+
+  	var response_number;
+  	database.ref('responses/').on('value', function(snapshot) {
+  		updateNum(snapshot.val().length);
+  	});
+
+  	function updateNum(num) {
+  		response_number = num;
+  	}
+
+  	//Adds a "response" to the database
+  	//The client page will loop through these, so they should be formatted this way
+  	//gets the argument ?s=true or ?s=false
+  	function addResponse(q1, q2, q3) {
+  		var url_str = window.location.href;
+  		var url = new URL(url_str);
+  		var sat = url.searchParams.get("s");
+  		switch(sat) {
+  			case "true":
+  				sat = true;
+  				break;
+  			case "false":
+  				sat = false;
+  				break;
+  			default:
+  				return;
+  		}
+  		database.ref('responses/' + response_number).set({
+  			question_1: q1,
+  			question_2: q2,
+  			question_3: q3,
+  			satisfied: sat
+  		});
+  		return;
+  	}
+</script>
+
+</body></html>

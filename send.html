@@ -1,0 +1,22 @@
+ <!DOCTYPE html>
+ <!--written by Jonathan Moyers-->
+<html>
+<head>
+	<title>ReConnect E-Mail page</title>
+</head>
+<body style="background-color:limegreen;font-family:Georgia;text-align:center">
+<br><br><br>
+<p>This will be used to send e-mails to users, but to do that we have to use the enterprise-priced Firebase software.</p>
+<p>It's here as a convenience to navigate to the forms that will be linked in the e-mail.</p>
+<br><br>
+<button onclick="redirect('happy')">See the 'Positive' Questionnaire</button>
+<button onclick="redirect('sad')">See the 'Negative' Questionnaire</button>
+<script>
+	//This function redirects to the page specified by the argument
+	function redirect(arg) {
+		window.location.href =("https://test-database-29a32.web.app/"+arg);
+	}
+</script>
+
+</body>
+</html> 
